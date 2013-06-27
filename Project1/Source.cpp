@@ -1,5 +1,6 @@
 // Tree Practice
 #include <iostream>
+#include <stack>
 using namespace std;
 // Traverse
 // ÏÈÐò pre-order
@@ -66,3 +67,13 @@ Status PostOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( T
 // stack version
 // =============================
 
+// pre-order
+Status PreOrderTraverseForTree_StackVer(TreeNode *node, Status (* Visit)( TElemType e)){
+	if(node){
+		if(Visit(node->mData)){
+
+		}else
+			return ERROR;
+	}else
+		return OK;
+}
