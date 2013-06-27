@@ -32,27 +32,22 @@ Status printInt(TElemType e){
 // pre-order
 Status PreOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
-		if(Visit(node->mData)){
-			if(PreOrderTraverseForTree(node->left, Visit)){
-				if(PreOrderTraverseForTree(node->right, Visit)){
+		if(Visit(node->mData))
+			if(PreOrderTraverseForTree(node->left, Visit))
+				if(PreOrderTraverseForTree(node->right, Visit))
 					return OK;
-				}else
-					return ERROR;
-			}else
-				return ERROR;
-		}else
-			return ERROR;
+		return ERROR;
 	}else
 		return OK;
 }
 // in-order
 Status InOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
-		InOrderTraverseForTree(node->left, Visit);
-		if(!Visit(node->mData))
-			return ERROR;
-		InOrderTraverseForTree(node->right, Visit);
-		return OK;
+		if(InOrderTraverseForTree(node->left, Visit))
+			if(Visit(node->mData))		
+				if(InOrderTraverseForTree(node->right, Visit))
+					return OK;
+		return ERROR;
 	}else
 		return OK;
 }
