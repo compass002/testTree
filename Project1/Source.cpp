@@ -30,22 +30,33 @@ Status printInt(TElemType e){
 // =============================
 
 // pre-order
-Status PreOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
+Status PreOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
 		if(Visit(node->mData))
-			if(PreOrderTraverseForTree(node->left, Visit))
-				if(PreOrderTraverseForTree(node->right, Visit))
+			if(PreOrderTraverseForTree_RecursionVer(node->left, Visit))
+				if(PreOrderTraverseForTree_RecursionVer(node->right, Visit))
 					return OK;
 		return ERROR;
 	}else
 		return OK;
 }
 // in-order
-Status InOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
+Status InOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
-		if(InOrderTraverseForTree(node->left, Visit))
+		if(InOrderTraverseForTree_RecursionVer(node->left, Visit))
 			if(Visit(node->mData))		
-				if(InOrderTraverseForTree(node->right, Visit))
+				if(InOrderTraverseForTree_RecursionVer(node->right, Visit))
+					return OK;
+		return ERROR;
+	}else
+		return OK;
+}
+// post-order
+Status PostOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
+	if(node){
+		if(PostOrderTraverseForTree_RecursionVer(node->left, Visit))
+			if(PostOrderTraverseForTree_RecursionVer(node->right, Visit))
+				if(Visit(node->mData))
 					return OK;
 		return ERROR;
 	}else
@@ -54,3 +65,4 @@ Status InOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
 // =============================
 // stack version
 // =============================
+
