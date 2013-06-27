@@ -38,8 +38,19 @@ Status PreOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
 			return OK;
 		}else
 			return ERROR;
-	}
-	return OK;
+	}else
+		return OK;
+}
+// in-order
+Status InOrderTraverseForTree(TreeNode *node, Status (* Visit)( TElemType e)){
+	if(node){
+		InOrderTraverseForTree(node->left, Visit);
+		if(!Visit(node->mData))
+			return ERROR;
+		InOrderTraverseForTree(node->right, Visit);
+		return OK;
+	}else
+		return OK;
 }
 // =============================
 // stack version
