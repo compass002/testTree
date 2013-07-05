@@ -1,6 +1,7 @@
 // Tree Practice
 #include <iostream>
 #include <stack>
+#include "MyStack.h"
 using namespace std;
 // Traverse
 // ÏÈÐò pre-order
@@ -16,10 +17,10 @@ struct Data{
 };
 typedef Data TElemType;
 // tree node
-struct TreeNode{
+struct BinaryTreeNode{
 	Data mData;
-	struct TreeNode *left;
-	struct TreeNode *right;
+	struct BinaryTreeNode *left;
+	struct BinaryTreeNode *right;
 };
 
 Status printInt(TElemType e){
@@ -31,7 +32,7 @@ Status printInt(TElemType e){
 // =============================
 
 // pre-order
-Status PreOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
+Status PreOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
 		if(Visit(node->mData))
 			if(PreOrderTraverseForTree_RecursionVer(node->left, Visit))
@@ -42,7 +43,7 @@ Status PreOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TE
 		return OK;
 }
 // in-order
-Status InOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
+Status InOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
 		if(InOrderTraverseForTree_RecursionVer(node->left, Visit))
 			if(Visit(node->mData))		
@@ -53,7 +54,7 @@ Status InOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TEl
 		return OK;
 }
 // post-order
-Status PostOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( TElemType e)){
+Status PostOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
 		if(PostOrderTraverseForTree_RecursionVer(node->left, Visit))
 			if(PostOrderTraverseForTree_RecursionVer(node->right, Visit))
@@ -66,14 +67,30 @@ Status PostOrderTraverseForTree_RecursionVer(TreeNode *node, Status (* Visit)( T
 // =============================
 // stack version
 // =============================
-
-// pre-order
-Status PreOrderTraverseForTree_StackVer(TreeNode *node, Status (* Visit)( TElemType e)){
+Status PreOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
 	if(node){
-		if(Visit(node->mData)){
-
-		}else
-			return ERROR;
+		if(Visit(node->mData))
+			if(PreOrderTraverseForTree_RecursionVer(node->left, Visit))
+				if(PreOrderTraverseForTree_RecursionVer(node->right, Visit))
+					return OK;
+		return ERROR;
 	}else
 		return OK;
+}
+// pre-order
+Status PreOrderTraverseForTree_StackVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
+	Stack<BinaryTreeNode *> mStack;
+	
+	while(node||!mStack.IsEmpty()){
+		if(node){
+		Visit(node->mData);
+			mStack.Push(node);
+			
+			node = node->left;
+		}else{
+			BinaryTreeNode *tempNode = nullptr;
+			mStack.Pop(tempNode);
+			node = tempNode->right;
+		}
+	}
 }
