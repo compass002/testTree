@@ -67,30 +67,63 @@ Status PostOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Vis
 // =============================
 // stack version
 // =============================
-Status PreOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
-	if(node){
-		if(Visit(node->mData))
-			if(PreOrderTraverseForTree_RecursionVer(node->left, Visit))
-				if(PreOrderTraverseForTree_RecursionVer(node->right, Visit))
-					return OK;
-		return ERROR;
-	}else
-		return OK;
-}
+
 // pre-order
 Status PreOrderTraverseForTree_StackVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
 	Stack<BinaryTreeNode *> mStack;
-	
 	while(node||!mStack.IsEmpty()){
 		if(node){
-		Visit(node->mData);
-			mStack.Push(node);
-			
+			if(!Visit(node->mData))
+				return ERROR;
+			if(!mStack.Push(node))
+				return ERROR;
 			node = node->left;
+
 		}else{
 			BinaryTreeNode *tempNode = nullptr;
-			mStack.Pop(tempNode);
+			if(!mStack.Pop(tempNode))
+				return ERROR;
 			node = tempNode->right;
 		}
 	}
+	return OK;
+}
+
+// in-order
+Status InOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
+	Stack<BinaryTreeNode *> mStack;
+	while(node||!mStack.IsEmpty()){
+		if(node){
+			if(!mStack.Push(node))
+				return ERROR;
+			node = node->left;
+		}else{
+			BinaryTreeNode *tempNode = nullptr;
+			if(!mStack.Pop(tempNode))
+				return ERROR;
+			if(!Visit(node->mData))
+				return ERROR;
+			node = tempNode->right;
+		}
+	}
+	return OK;
+}
+// post-order
+Status PostOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
+	Stack<BinaryTreeNode *> mStack;
+	while(node||!mStack.IsEmpty()){
+		if(node){
+			if(!mStack.Push(node))
+				return ERROR;
+			node = node->left;
+		}else{
+			BinaryTreeNode *tempNode = nullptr;
+			if(!mStack.Pop(tempNode))
+				return ERROR;
+			if(!Visit(node->mData))
+				return ERROR;
+			node = tempNode->right;
+		}
+	}
+	return OK;
 }
