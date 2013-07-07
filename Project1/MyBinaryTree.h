@@ -109,20 +109,32 @@ Status InOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit
 	return OK;
 }
 // post-order
+struct Temp{
+	BinaryTreeNode *node;
+	bool right;
+	Temp():node(nullptr),right(false){}
+	Temp(BinaryTreeNode *x, bool y):node(x),right(y){}
+	Temp(const Temp &a):node(a.node),right(a.right){}
+};
 Status PostOrderTraverseForTree_RecursionVer(BinaryTreeNode *node, Status (* Visit)( TElemType e)){
-	Stack<BinaryTreeNode *> mStack;
+	Stack<Temp> mStack;
 	while(node||!mStack.IsEmpty()){
 		if(node){
-			if(!mStack.Push(node))
+			if(!mStack.Push(Temp(node,false)))
 				return ERROR;
 			node = node->left;
 		}else{
-			BinaryTreeNode *tempNode = nullptr;
-			if(!mStack.Pop(tempNode))
+			Temp a;
+			if(!mStack.Pop(a))
 				return ERROR;
-			if(!Visit(node->mData))
-				return ERROR;
-			node = tempNode->right;
+			if(!a.right){
+				if(mStack.Push(Temp(node,true)))
+					return ERROR;
+				node = a.node->right;
+			}else{
+				if(!Visit(a.node->mData))
+					return ERROR;
+			}
 		}
 	}
 	return OK;
